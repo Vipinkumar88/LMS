@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="h4 mb-0">Pay Fine</span>
+                        <div>
+                            <a href="{{ url_for('transactions') }}" class="btn btn-sm btn-outline-light me-2">Back</a>
+                            <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-light">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">Fine Payment Form</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="book_title" class="form-label">Book Name</label>
+                                <input type="text" class="form-control" id="book_title" value="{{ transaction.book.title }}" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="book_author" class="form-label">Author</label>
+                                <input type="text" class="form-control" id="book_author" value="{{ transaction.book.author }}" readonly>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="serial_number" class="form-label">Serial Number</label>
+                                <input type="text" class="form-control" id="serial_number" value="{{ transaction.book.serial_number }}" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="member_name" class="form-label">Member Name</label>
+                                <input type="text" class="form-control" id="member_name" value="{{ transaction.membership.name }}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="issue_date" class="form-label">Issue Date</label>
+                                <input type="date" class="form-control" id="issue_date" value="{{ transaction.issue_date.strftime('%Y-%m-%d') }}" readonly>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="return_date" class="form-label">Return Date</label>
+                                <input type="date" class="form-control" id="return_date" value="{{ transaction.return_date.strftime('%Y-%m-%d') }}" readonly>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="actual_return_date" class="form-label">Actual Return Date</label>
+                                <input type="date" class="form-control" id="actual_return_date" value="{{ transaction.actual_return_date.strftime('%Y-%m-%d') }}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="fine_amount" class="form-label">Fine Amount (₹)</label>
+                                <input type="text" class="form-control" id="fine_amount" value="{{ "%.2f"|format(transaction.fine_amount) }}" readonly>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-end">
+                                <div class="form-check form-switch mt-3">
+                                    <input class="form-check-input" type="checkbox" id="fine_paid" name="fine_paid" value="yes" required>
+                                    <label class="form-check-label" for="fine_paid">
+                                        I confirm that the fine amount has been paid
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="remarks" class="form-label">Remarks (Optional)</label>
+                            <textarea class="form-control" id="remarks" name="remarks" rows="3"></textarea>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('transactions') }}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Confirm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

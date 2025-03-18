@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Search Books</h2>
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="search_query" class="form-label">Search Query</label>
+                                <input type="text" class="form-control" id="search_query" name="search_query" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="search_by" class="form-label">Search By</label>
+                                <select class="form-select" id="search_by" name="search_by">
+                                    <option value="title">Title</option>
+                                    <option value="author">Author</option>
+                                    <option value="serial">Serial Number</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label">&nbsp;</label>
+                                <button type="submit" class="btn btn-primary d-block">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if books %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Search Results</h5>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Serial Number</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Publisher</th>
+                                <th>Year</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for book in books %}
+                            <tr>
+                                <td>{{ book.serial_number }}</td>
+                                <td>{{ book.title }}</td>
+                                <td>{{ book.author }}</td>
+                                <td>{{ book.publisher }}</td>
+                                <td>{{ book.year }}</td>
+                                <td>{{ book.status }}</td>
+                                <td>
+                                    {% if book.status == 'available' %}
+                                    <a href="{{ url_for('issue_book', book_id=book.id) }}" class="btn btn-sm btn-primary">Issue</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %} 

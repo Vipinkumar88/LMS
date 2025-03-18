@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Issue Book</h2>
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Book Details</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Title:</strong> {{ book.title }}</p>
+                        <p><strong>Serial Number:</strong> {{ book.serial_number }}</p>
+                        <p><strong>Author:</strong> {{ book.author }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Publisher:</strong> {{ book.publisher }}</p>
+                        <p><strong>Year:</strong> {{ book.year }}</p>
+                        <p><strong>Status:</strong> {{ book.status }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Issue Details</h5>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="membership_number" class="form-label">Membership Number</label>
+                        <input type="text" class="form-control" id="membership_number" name="membership_number" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="issue_date" class="form-label">Issue Date</label>
+                                <input type="date" class="form-control" id="issue_date" name="issue_date" 
+                                       value="{{ now.strftime('%Y-%m-%d') }}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="return_date" class="form-label">Return Date</label>
+                                <input type="date" class="form-control" id="return_date" name="return_date" 
+                                       value="{{ (now + timedelta(days=15)).strftime('%Y-%m-%d') }}" required>
+                                <small class="text-muted">Maximum 15 days from issue date</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="remarks" class="form-label">Remarks (Optional)</label>
+                        <textarea class="form-control" id="remarks" name="remarks" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Issue Book</button>
+                    <a href="{{ url_for('search_book') }}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

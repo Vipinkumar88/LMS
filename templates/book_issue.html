@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="h4 mb-0">Issue Book</span>
+                        <div>
+                            <a href="{{ url_for('transactions') }}" class="btn btn-sm btn-outline-light me-2">Back</a>
+                            <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-light">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Book Issue Form</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('book_issue') }}" method="POST">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="book_title" class="form-label">Enter Book Name</label>
+                                <input type="text" class="form-control" id="book_title" name="book_title" required list="book_titles">
+                                <datalist id="book_titles">
+                                    {% for book in all_books %}
+                                    <option value="{{ book.title }}">
+                                    {% endfor %}
+                                </datalist>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="book_author" class="form-label">Enter Author Name</label>
+                                <input type="text" class="form-control" id="book_author" name="book_author">
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="membership_number" class="form-label">Membership Number</label>
+                                <input type="text" class="form-control" id="membership_number" name="membership_number" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="issue_date" class="form-label">Issue Date</label>
+                                <input type="date" class="form-control" id="issue_date" name="issue_date" required value="{{ now.strftime('%Y-%m-%d') }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="return_date" class="form-label">Return Date</label>
+                                <input type="date" class="form-control" id="return_date" name="return_date" required value="{{ (now + timedelta(days=15)).strftime('%Y-%m-%d') }}">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="remarks" class="form-label">Remarks (Optional)</label>
+                            <textarea class="form-control" id="remarks" name="remarks" rows="3"></textarea>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('transactions') }}" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Confirm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if error %}
+            <div class="alert alert-danger mt-4">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            {% if book_found %}
+            <div class="card mt-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Book Found</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-bordered mb-0">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Serial No</th>
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                    <th>Publisher</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ book.serial_number }}</td>
+                                    <td>{{ book.title }}</td>
+                                    <td>{{ book.author }}</td>
+                                    <td>{{ book.publisher }}</td>
+                                    <td>
+                                        {% if book.status == 'available' %}
+                                        <span class="badge bg-success">Available</span>
+                                        {% else %}
+                                        <span class="badge bg-danger">Issued</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if book.status == 'available' %}
+                                        <form action="{{ url_for('direct_issue', book_id=book.id) }}" method="POST">
+                                            <input type="hidden" name="membership_number" value="{{ membership_number }}">
+                                            <input type="hidden" name="issue_date" value="{{ issue_date }}">
+                                            <input type="hidden" name="return_date" value="{{ return_date }}">
+                                            <input type="hidden" name="remarks" value="{{ remarks }}">
+                                            <button type="submit" class="btn btn-sm btn-primary">Issue</button>
+                                        </form>
+                                        {% else %}
+                                        <button class="btn btn-sm btn-secondary" disabled>Issued</button>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

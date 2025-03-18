@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>User Dashboard</h2>
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Search Books</h5>
+                <p class="card-text">Search for available books in the library.</p>
+                <a href="{{ url_for('search_book') }}" class="btn btn-primary">Search Books</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Return Books</h5>
+                <p class="card-text">Return borrowed books to the library.</p>
+                <a href="{{ url_for('return_book') }}" class="btn btn-primary">Return Books</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Reports</h5>
+                <p class="card-text">View your borrowing history and reports.</p>
+                <a href="{{ url_for('reports') }}" class="btn btn-primary">View Reports</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

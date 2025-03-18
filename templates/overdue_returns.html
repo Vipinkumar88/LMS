@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="h4 mb-0">Overdue Books</span>
+                        <div>
+                            <a href="{{ url_for('reports') }}" class="btn btn-sm btn-outline-light me-2">Home</a>
+                            <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-light">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Serial Number</th>
+                                    <th>Book Title</th>
+                                    <th>Membership ID</th>
+                                    <th>Issue Date</th>
+                                    <th>Return Date</th>
+                                    <th>Fine Calculation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if transactions %}
+                                    {% for transaction in transactions %}
+                                    <tr>
+                                        <td>{{ transaction.book.serial_number }}</td>
+                                        <td>{{ transaction.book.title }}</td>
+                                        <td>{{ transaction.membership.membership_number }}</td>
+                                        <td>{{ transaction.issue_date.strftime('%d-%m-%Y') }}</td>
+                                        <td>{{ transaction.return_date.strftime('%d-%m-%Y') }}</td>
+                                        <td>
+                                            {% set days_late = (now.date() - transaction.return_date.date()).days %}
+                                            {% if days_late > 0 %}
+                                                {{ days_late }} days late = ₹{{ days_late * 10 }}
+                                            {% else %}
+                                                ₹0
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="6" class="text-center">No overdue books found</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <a href="{{ url_for('reports') }}" class="btn btn-secondary">Back</a>
+        </div>
+    </div>
+</div>
+{% endblock %} 

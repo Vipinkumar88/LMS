@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>
+    {% if category == 'book' %}
+        Books
+    {% elif category == 'movie' %}
+        Movies
+    {% else %}
+        {{ category }}
+    {% endif %}
+</h2>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <a href="{{ url_for('categories') }}" class="btn btn-secondary mb-3">← Back to Categories</a>
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Serial Number</th>
+                                <th>Title</th>
+                                <th>
+                                    {% if category == 'book' %}
+                                        Author
+                                    {% elif category == 'movie' %}
+                                        Director
+                                    {% else %}
+                                        Author/Director
+                                    {% endif %}
+                                </th>
+                                <th>
+                                    {% if category == 'book' %}
+                                        Publisher
+                                    {% elif category == 'movie' %}
+                                        Studio
+                                    {% else %}
+                                        Publisher/Studio
+                                    {% endif %}
+                                </th>
+                                <th>Year</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if books %}
+                                {% for book in books %}
+                                <tr>
+                                    <td>{{ book.serial_number }}</td>
+                                    <td>{{ book.title }}</td>
+                                    <td>{{ book.author }}</td>
+                                    <td>{{ book.publisher }}</td>
+                                    <td>{{ book.year }}</td>
+                                    <td>
+                                        {% if book.status == 'available' %}
+                                            Available
+                                        {% else %}
+                                            Issued
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if book.status == 'available' %}
+                                        <a href="{{ url_for('issue_book', book_id=book.id) }}" class="btn btn-sm btn-primary">Issue</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="7" class="text-center">No items found in this category</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Quick Access</h5>
+                <div class="row">
+                    <div class="col-md-4">
+                        <a href="{{ url_for('search_book') }}" class="btn btn-outline-primary btn-block mb-2">Search Book</a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="{{ url_for('return_book') }}" class="btn btn-outline-success btn-block mb-2">Return Book</a>
+                    </div>
+                    <div class="col-md-4">
+                        {% if session['role'] == 'admin' %}
+                        <a href="{{ url_for('add_book') }}" class="btn btn-outline-info btn-block mb-2">Add New Book</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

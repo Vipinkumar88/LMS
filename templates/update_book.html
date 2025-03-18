@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="h4 mb-0">Update Book/Movie</span>
+                        <div>
+                            <a href="{{ url_for('home') }}" class="btn btn-sm btn-outline-light me-2">Home</a>
+                            <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-light">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if not book %}
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Search Book</h5>
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="serial_number" class="form-label">Serial Number</label>
+                            <input type="text" class="form-control" id="serial_number" name="serial_number" required>
+                        </div>
+                        <div class="d-flex">
+                            <button type="submit" name="search" value="search" class="btn btn-primary me-2">Search</button>
+                            <a href="{{ url_for('maintenance') }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST">
+                        <input type="hidden" name="serial_number" value="{{ book.serial_number }}">
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Book/Movie Type</label>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="type" id="type_book" value="book" {% if book.type == 'book' %}checked{% endif %}>
+                                    <label class="form-check-label" for="type_book">
+                                        Radio Button - Book
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="type" id="type_movie" value="movie" {% if book.type == 'movie' %}checked{% endif %}>
+                                    <label class="form-check-label" for="type_movie">
+                                        Radio Button - Movie
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="title" class="form-label">Book/Movie Name</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="title" name="title" value="{{ book.title }}" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="serial_number_display" class="form-label">Serial No</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="serial_number_display" value="{{ book.serial_number }}" readonly>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="status" class="form-label">Status</label>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-select" id="status" name="status">
+                                    <option value="available" {% if book.status == 'available' %}selected{% endif %}>Available</option>
+                                    <option value="issued" {% if book.status == 'issued' %}selected{% endif %}>Issued</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="procurement_date" class="form-label">Date</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="date" class="form-control" id="procurement_date" name="procurement_date" value="{% if book.procurement_date %}{{ book.procurement_date.strftime('%Y-%m-%d') }}{% endif %}">
+                            </div>
+                        </div>
+                        
+                        <!-- Hidden fields for backward compatibility -->
+                        <input type="hidden" id="author" name="author" value="{{ book.author }}">
+                        <input type="hidden" id="publisher" name="publisher" value="{{ book.publisher }}">
+                        <input type="hidden" id="year" name="year" value="{{ book.year }}">
+                        <input type="hidden" id="cost" name="cost" value="{% if book.cost %}{{ book.cost }}{% else %}0{% endif %}">
+                        
+                        <div class="row">
+                            <div class="col-md-4 offset-md-3">
+                                <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='{{ url_for('maintenance') }}'">Cancel</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" name="update" value="update" class="btn btn-primary btn-block">Confirm</button>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-9 offset-md-3">
+                            <div class="alert alert-info">
+                                All fields required to submit the form.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 

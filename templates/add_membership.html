@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="h4 mb-0">Add Membership</span>
+                        <div>
+                            <a href="{{ url_for('home') }}" class="btn btn-sm btn-outline-light me-2">Home</a>
+                            <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-light">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="first_name" class="form-label">First Name</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="first_name" name="first_name" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="last_name" class="form-label">Last Name</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="last_name" name="last_name" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="contact_name" class="form-label">Contact Name</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="contact_name" name="contact_name" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="contact_address" class="form-label">Contact Address</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="contact_address" name="contact_address" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="aadhar_card_number" class="form-label">Aadhaar Card No</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="aadhar_card_number" name="aadhar_card_number" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="start_date" class="form-label">Start Date</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="date" class="form-control" id="start_date" name="start_date" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="end_date" class="form-label">End Date</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="date" class="form-control" id="end_date" name="end_date" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Membership</label>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="membership_type" id="six_months" value="6 months" checked>
+                                    <label class="form-check-label" for="six_months">
+                                        Radio Button - six months
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="membership_type" id="one_year" value="1 year">
+                                    <label class="form-check-label" for="one_year">
+                                        Radio Button - One Year
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="membership_type" id="two_years" value="2 years">
+                                    <label class="form-check-label" for="two_years">
+                                        Radio Button -Two Years
+                                    </label>
+                                </div>
+                                <div class="mt-2">
+                                    <small class="text-muted">Only one radio button to be selected for membership - six months or one year or two years</small><br>
+                                    <small class="text-muted">All fields required</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 offset-md-3">
+                                <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='{{ url_for('maintenance') }}'">Cancel</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary btn-block">Confirm</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

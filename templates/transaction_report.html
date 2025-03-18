@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>
+    {% if status_filter == 'issued' %}
+        Active Issues Report
+    {% elif status_filter == 'pending' %}
+        Pending Issue Requests Report
+    {% elif overdue_filter == 'true' %}
+        Overdue Returns Report
+    {% else %}
+        Transaction Report
+    {% endif %}
+</h2>
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Book Title</th>
+                                <th>Serial Number</th>
+                                <th>Member Name</th>
+                                <th>Issue Date</th>
+                                <th>Return Date</th>
+                                <th>Actual Return Date</th>
+                                <th>Fine</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if transactions %}
+                                {% for transaction in transactions %}
+                                <tr>
+                                    <td>{{ transaction.book.title }}</td>
+                                    <td>{{ transaction.book.serial_number }}</td>
+                                    <td>{{ transaction.membership.name }}</td>
+                                    <td>{{ transaction.issue_date.strftime('%Y-%m-%d') }}</td>
+                                    <td>{{ transaction.return_date.strftime('%Y-%m-%d') }}</td>
+                                    <td>
+                                        {% if transaction.actual_return_date %}
+                                            {{ transaction.actual_return_date.strftime('%Y-%m-%d') }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if transaction.fine_amount > 0 %}
+                                            ₹ {{ "%.2f"|format(transaction.fine_amount) }}
+                                            {% if transaction.fine_paid %}
+                                                (Paid)
+                                            {% else %}
+                                                (Unpaid)
+                                            {% endif %}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if transaction.status == 'issued' %}
+                                            Issued
+                                        {% elif transaction.status == 'returned' %}
+                                            Returned
+                                        {% elif transaction.status == 'pending' %}
+                                            Pending
+                                        {% else %}
+                                            {{ transaction.status }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="8" class="text-center">No transaction records found</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-md-12">
+        <a href="{{ url_for('reports') }}" class="btn btn-secondary">← Back to Reports</a>
+    </div>
+</div>
+{% endblock %} 

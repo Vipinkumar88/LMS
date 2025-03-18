@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Book Categories</h2>
+<div class="row mt-4">
+    {% for category in book_types %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    {% if category == 'book' %}
+                        Books
+                    {% elif category == 'movie' %}
+                        Movies
+                    {% else %}
+                        {{ category }}
+                    {% endif %}
+                </h5>
+                <p class="card-text">
+                    {% if category == 'book' %}
+                        View all books available in the library.
+                    {% elif category == 'movie' %}
+                        View all movies available in the library.
+                    {% else %}
+                        View all items available in this category.
+                    {% endif %}
+                </p>
+                <a href="{{ url_for('category', category=category) }}" class="btn btn-primary">View</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Maintenance</h5>
+                <p class="card-text">Manage books, memberships, and users.</p>
+                {% if session['role'] == 'admin' %}
+                <a href="{{ url_for('maintenance') }}" class="btn btn-primary">Go to Maintenance</a>
+                {% else %}
+                <button class="btn btn-secondary" disabled>Admin Access Only</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Reports</h5>
+                <p class="card-text">View various reports.</p>
+                <a href="{{ url_for('reports') }}" class="btn btn-primary">View Reports</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Transactions</h5>
+                <p class="card-text">Search, issue or return books.</p>
+                <a href="{{ url_for('search_book') }}" class="btn btn-primary">Manage Transactions</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

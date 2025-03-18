@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="h4 mb-0">Update Membership</span>
+                        <div>
+                            <a href="{{ url_for('home') }}" class="btn btn-sm btn-outline-light me-2">Home</a>
+                            <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-light">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if not membership %}
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Search Membership</h5>
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="membership_number" class="form-label">Membership Number</label>
+                            <input type="text" class="form-control" id="membership_number" name="membership_number" required>
+                        </div>
+                        <div class="d-flex">
+                            <button type="submit" name="search" value="search" class="btn btn-primary me-2">Search</button>
+                            <a href="{{ url_for('maintenance') }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST">
+                        <input type="hidden" name="membership_number" value="{{ membership.membership_number }}">
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="membership_number_display" class="form-label">Membership Number</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="membership_number_display" value="{{ membership.membership_number }}" readonly>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="start_date" class="form-label">Start Date</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ membership.start_date.strftime('%Y-%m-%d') }}" readonly>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="end_date" class="form-label">End Date</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="date" class="form-control" id="end_date" name="end_date" value="{{ membership.end_date.strftime('%Y-%m-%d') }}" readonly>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Membership Extn:</label>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="extension_type" id="six_months" value="6 months" checked>
+                                    <label class="form-check-label" for="six_months">
+                                        Radio Button - six months
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="extension_type" id="one_year" value="1 year">
+                                    <label class="form-check-label" for="one_year">
+                                        Radio Button - One Year
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="extension_type" id="two_years" value="2 years">
+                                    <label class="form-check-label" for="two_years">
+                                        Radio Button -Two Years
+                                    </label>
+                                </div>
+                                <div class="mt-2">
+                                    <small class="text-muted">only one Radio button to be selected. Either movie or book.</small><br>
+                                    <small class="text-muted">All fields required</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Membership Remove</label>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="action" id="action_cancel" value="cancel">
+                                    <label class="form-check-label" for="action_cancel">
+                                        Radio Button
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="pending_amount" class="form-label">Pending Amount (₹)</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="number" class="form-control" id="pending_amount" name="pending_amount" step="0.01" min="0" value="{{ membership.pending_amount }}">
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4 offset-md-3">
+                                <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='{{ url_for('maintenance') }}'">Cancel</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" name="update" value="update" class="btn btn-primary btn-block">Confirm</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+ 

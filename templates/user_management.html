@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="h4 mb-0">User Management</span>
+                        <div>
+                            <a href="{{ url_for('home') }}" class="btn btn-sm btn-outline-light me-2">Home</a>
+                            <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-light">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">User Type</label>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="action" id="new_user" value="new" {% if action == 'new' %}checked{% endif %}>
+                                    <label class="form-check-label" for="new_user">
+                                        New User - Radio Button
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="action" id="existing_user" value="existing" {% if action == 'existing' %}checked{% endif %}>
+                                    <label class="form-check-label" for="existing_user">
+                                        Existing User - Radio Button
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="name" class="form-label">Name</label>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Status</label>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="status_active" name="status" value="active" checked>
+                                    <label class="form-check-label" for="status_active">
+                                        Checkbox - Active
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Admin</label>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="role_admin" name="role" value="admin">
+                                    <label class="form-check-label" for="role_admin">
+                                        Checkbox - Admin
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Hidden fields for additional user details -->
+                        {% if action == 'existing' and user %}
+                        <input type="hidden" name="username" value="{{ user.username }}">
+                        {% endif %}
+                        
+                        <div class="row">
+                            <div class="col-md-4 offset-md-3">
+                                <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='{{ url_for('maintenance') }}'">Cancel</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary btn-block">Confirm</button>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-9 offset-md-3">
+                            <div class="alert alert-info">
+                                All fields required to submit the form.<br>
+                                unselection of the checkbox implies - inactive and not an admin.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Toggle active radio button based on action
+        const newUserRadio = document.getElementById('new_user');
+        const existingUserRadio = document.getElementById('existing_user');
+        
+        newUserRadio.addEventListener('change', function() {
+            if(this.checked) {
+                window.location.href = "{{ url_for('user_management', action='new') }}";
+            }
+        });
+        
+        existingUserRadio.addEventListener('change', function() {
+            if(this.checked) {
+                window.location.href = "{{ url_for('user_management', action='existing') }}";
+            }
+        });
+    });
+</script>
+{% endblock %} 

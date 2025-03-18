@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="h4 mb-0">Transactions</span>
+                        <div>
+                            <a href="{{ url_for('user_home' if session['role'] != 'admin' else 'admin_home') }}" class="btn btn-sm btn-outline-light me-2">Home</a>
+                            <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-light">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Check Book Availability</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Check the availability of a book in the library.</p>
+                    <a href="{{ url_for('book_availability') }}" class="btn btn-primary">Check Book Availability</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Issue Book</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">First search for a book and then click the "Issue" button to issue it to a member.</p>
+                    <a href="{{ url_for('book_issue') }}" class="btn btn-primary">Issue Book</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-warning">
+                    <h5 class="mb-0">Return Book</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Process a book returned by a member.</p>
+                    <a href="{{ url_for('return_book') }}" class="btn btn-primary">Return Book</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">Pay Fine</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Process fine payment for books returned late.</p>
+                    <form action="{{ url_for('search_for_fine') }}" method="POST">
+                        <div class="mb-3">
+                            <label for="book_title" class="form-label">Book Title</label>
+                            <input type="text" class="form-control" id="book_title" name="book_title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="serial_number" class="form-label">Serial Number</label>
+                            <input type="text" class="form-control" id="serial_number" name="serial_number" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Search Book</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Cancel Transaction</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Cancel a transaction for an issued book.</p>
+                    <form action="{{ url_for('search_for_cancel') }}" method="POST">
+                        <div class="mb-3">
+                            <label for="cancel_book_title" class="form-label">Book Title</label>
+                            <input type="text" class="form-control" id="cancel_book_title" name="book_title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cancel_serial_number" class="form-label">Serial Number</label>
+                            <input type="text" class="form-control" id="cancel_serial_number" name="serial_number" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Search Book</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
