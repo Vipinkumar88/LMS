@@ -15,8 +15,8 @@ A comprehensive library management system built with Flask, SQLAlchemy, and Boot
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/library-management-system.git
-cd library-management-system
+git clone https://github.com/Vipinkumar88/LMS.git
+cd LMS
 ```
 
 2. Create a virtual environment and activate it:
@@ -58,4 +58,4 @@ python app.py
 
 ## License
 
-MIT 
+MIT
